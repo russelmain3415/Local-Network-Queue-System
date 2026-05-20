@@ -1,0 +1,1081 @@
+{
+  "nextTicket": 1,
+  "queue": [],
+  "counters": [],
+  "counts": {},
+  "announcement": "",
+  "call": null,
+  "status": {
+    "1": "Closed",
+    "2": "Closed",
+    "3": "Closed",
+    "4": "Closed",
+    "5": "Closed",
+    "6": "Closed",
+    "7": "Closed",
+    "8": "Closed",
+    "9": "Closed",
+    "10": "Closed",
+    "11": "Closed",
+    "12": "Closed",
+    "13": "Closed",
+    "14": "Closed",
+    "15": "Closed",
+    "16": "Closed",
+    "17": "Closed",
+    "18": "Closed"
+  },
+  "history": [
+    {
+      "nextTicket": 6,
+      "queue": [],
+      "counters": [],
+      "counts": {
+        "17": 0,
+        "18": 0
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 2, please proceed to Counter 17",
+        "timestamp": 1779236661536
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Closed"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [],
+      "counters": [],
+      "counts": {
+        "17": 0,
+        "18": 0
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 2, please proceed to Counter 17",
+        "timestamp": 1779236661536
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [],
+      "counters": [],
+      "counts": {
+        "17": 0,
+        "18": 0
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 2, please proceed to Counter 17",
+        "timestamp": 1779236661536
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Open",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [],
+      "counters": [
+        {
+          "id": 17,
+          "type": "Regular",
+          "ticket": 2,
+          "lastCallTime": 1779236661536
+        }
+      ],
+      "counts": {
+        "17": 0,
+        "18": 0
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 2, please proceed to Counter 17",
+        "timestamp": 1779236661536
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Open",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 17,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [],
+      "counts": {
+        "17": 1,
+        "18": 0
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 4, please proceed to Counter 17",
+        "timestamp": 1779236658582
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Open",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 17,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [
+        {
+          "id": 17,
+          "type": "Re-Online",
+          "ticket": 4,
+          "lastCallTime": 1779236658582
+        }
+      ],
+      "counts": {
+        "17": 1,
+        "18": 0
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 4, please proceed to Counter 17",
+        "timestamp": 1779236658582
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Open",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 17,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        },
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 17,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [],
+      "counts": {
+        "17": 2,
+        "18": 0
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 1, please proceed to Counter 17",
+        "timestamp": 1779236651171
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Open",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 17,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        },
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 17,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [
+        {
+          "id": 17,
+          "type": "Priority",
+          "ticket": 1,
+          "lastCallTime": 1779236651171
+        }
+      ],
+      "counts": {
+        "17": 2,
+        "18": 0
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 1, please proceed to Counter 17",
+        "timestamp": 1779236651171
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Open",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 17,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        },
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 17,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        },
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 17,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [],
+      "counts": {
+        "17": 3,
+        "18": 0
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 3, please proceed to Counter 18",
+        "timestamp": 1779236613943
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Open",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        },
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        },
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [],
+      "counts": {
+        "18": 3
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 3, please proceed to Counter 18",
+        "timestamp": 1779236613943
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Open",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        },
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        },
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [],
+      "counts": {
+        "18": 3
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 3, please proceed to Counter 18",
+        "timestamp": 1779236613943
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        },
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        },
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [
+        {
+          "id": 18,
+          "type": "Job Seeker",
+          "ticket": 3,
+          "lastCallTime": 1779236613943
+        }
+      ],
+      "counts": {
+        "18": 3
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 3, please proceed to Counter 18",
+        "timestamp": 1779236613943
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        },
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        },
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [],
+      "counts": {
+        "18": 3
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 3, please proceed to Counter 18",
+        "timestamp": 1779236613943
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        },
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        },
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [
+        {
+          "id": 18,
+          "type": "Job Seeker",
+          "ticket": 3,
+          "lastCallTime": 1779236613943
+        }
+      ],
+      "counts": {
+        "18": 3
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 3, please proceed to Counter 18",
+        "timestamp": 1779236613943
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "number": 3,
+          "type": "Job Seeker",
+          "assignedCounter": 18,
+          "timestamp": 1779236562374
+        },
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        },
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        },
+        {
+          "type": "Regular",
+          "number": 2,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236611660
+        }
+      ],
+      "counters": [],
+      "counts": {
+        "18": 4
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 2, please proceed to Counter 18",
+        "timestamp": 1779236608005
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "number": 3,
+          "type": "Job Seeker",
+          "assignedCounter": 18,
+          "timestamp": 1779236562374
+        },
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        },
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        }
+      ],
+      "counters": [
+        {
+          "id": 18,
+          "type": "Regular",
+          "ticket": 2,
+          "lastCallTime": 1779236608005
+        }
+      ],
+      "counts": {
+        "18": 3
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 2, please proceed to Counter 18",
+        "timestamp": 1779236608005
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "number": 2,
+          "type": "Regular",
+          "assignedCounter": 18,
+          "timestamp": 1779236560187
+        },
+        {
+          "number": 3,
+          "type": "Job Seeker",
+          "assignedCounter": 18,
+          "timestamp": 1779236562374
+        },
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        },
+        {
+          "type": "Re-Online",
+          "number": 4,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236606676
+        }
+      ],
+      "counters": [],
+      "counts": {
+        "18": 4
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 4, please proceed to Counter 18",
+        "timestamp": 1779236601374
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "number": 2,
+          "type": "Regular",
+          "assignedCounter": 18,
+          "timestamp": 1779236560187
+        },
+        {
+          "number": 3,
+          "type": "Job Seeker",
+          "assignedCounter": 18,
+          "timestamp": 1779236562374
+        },
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        }
+      ],
+      "counters": [
+        {
+          "id": 18,
+          "type": "Re-Online",
+          "ticket": 4,
+          "lastCallTime": 1779236601374
+        }
+      ],
+      "counts": {
+        "18": 3
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 4, please proceed to Counter 18",
+        "timestamp": 1779236601374
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "number": 2,
+          "type": "Regular",
+          "assignedCounter": 18,
+          "timestamp": 1779236560187
+        },
+        {
+          "number": 3,
+          "type": "Job Seeker",
+          "assignedCounter": 18,
+          "timestamp": 1779236562374
+        },
+        {
+          "number": 4,
+          "type": "Re-Online",
+          "assignedCounter": 18,
+          "timestamp": 1779236567920
+        },
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        }
+      ],
+      "counters": [],
+      "counts": {
+        "18": 4
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 5, please proceed to Counter 18",
+        "timestamp": 1779236590275
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    },
+    {
+      "nextTicket": 6,
+      "queue": [
+        {
+          "number": 2,
+          "type": "Regular",
+          "assignedCounter": 18,
+          "timestamp": 1779236560187
+        },
+        {
+          "number": 3,
+          "type": "Job Seeker",
+          "assignedCounter": 18,
+          "timestamp": 1779236562374
+        },
+        {
+          "number": 4,
+          "type": "Re-Online",
+          "assignedCounter": 18,
+          "timestamp": 1779236567920
+        },
+        {
+          "type": "Priority",
+          "number": 1,
+          "assignedCounter": 18,
+          "isReserved": true,
+          "timestamp": 1779236588987
+        }
+      ],
+      "counters": [
+        {
+          "id": 18,
+          "type": "Priority",
+          "ticket": 5,
+          "lastCallTime": 1779236590275
+        }
+      ],
+      "counts": {
+        "18": 4
+      },
+      "announcement": "",
+      "call": {
+        "text": "Number 5, please proceed to Counter 18",
+        "timestamp": 1779236590275
+      },
+      "status": {
+        "1": "Closed",
+        "2": "Closed",
+        "3": "Closed",
+        "4": "Closed",
+        "5": "Closed",
+        "6": "Closed",
+        "7": "Closed",
+        "8": "Closed",
+        "9": "Closed",
+        "10": "Closed",
+        "11": "Closed",
+        "12": "Closed",
+        "13": "Closed",
+        "14": "Closed",
+        "15": "Closed",
+        "16": "Closed",
+        "17": "Closed",
+        "18": "Open"
+      }
+    }
+  ]
+}

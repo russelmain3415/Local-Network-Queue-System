@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>NBI Queue - Counter 13</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial; background: #eef2f6; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+    .card { background: white; padding: 2.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; border-top: 8px solid #0d47a1; width: 100%; max-width: 400px; }
+    h1 { color: #0d47a1; margin-bottom: 0.5rem; }
+    .ticket-display { font-size: 4rem; font-weight: bold; color: #d32f2f; margin: 1.5rem 0; padding: 1rem; background: #fff5f5; border: 2px dashed #d32f2f; border-radius: 4px; min-height: 6rem; display: flex; align-items: center; justify-content: center; }
+    .status-msg { color: #666; margin-bottom: 2rem; }
+    .btn-call { background: #1565c0; color: white; border: none; padding: 1rem; font-size: 1.25rem; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; margin-bottom: 10px; }
+    .btn-call:hover { background: #0d47a1; }
+    .btn-repeat { background: #f57c00; color: white; border: none; padding: 0.75rem; font-size: 1rem; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; margin-bottom: 10px; display: none; }
+    .btn-repeat:hover { background: #ef6c00; }
+    .btn-reserve { background: #d32f2f; color: white; border: none; padding: 0.75rem; font-size: 1rem; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; margin-bottom: 10px; display: none; }
+    .btn-reserve:hover { background: #c62828; }
+    .btn-clear { background: #4caf50; color: white; border: none; padding: 0.75rem; font-size: 1rem; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+    .btn-clear:hover { background: #43a047; }
+    .btn-rescue { background: #673ab7; color: white; border: none; padding: 0.75rem; font-size: 1rem; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
+    .btn-rescue:hover { background: #5e35b1; }
+    .btn-undo { background: #f44336; color: white; border: none; padding: 0.75rem; font-size: 1rem; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; }
+    .btn-undo:hover { background: #d32f2f; }
+    .queue-section { margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1.5rem; }
+    .waiting-ticket { background: #e3f2fd; color: #0d47a1; padding: 10px; border-radius: 4px; margin: 5px 0; cursor: pointer; font-weight: bold; border: 1px solid #bbdefb; position: relative; }
+    .waiting-ticket:hover { background: #bbdefb; }
+    .tag-reserved { font-size: 0.7rem; background: #d32f2f; color: white; padding: 2px 5px; border-radius: 3px; position: absolute; right: 5px; top: 10px; }
+    
+    .status-btns { display: flex; gap: 10px; margin-bottom: 20px; }
+    .btn-open { background: #4caf50; color: white; border: none; padding: 0.5rem; border-radius: 4px; cursor: pointer; flex: 1; font-weight: bold; }
+    .btn-closed { background: #f44336; color: white; border: none; padding: 0.5rem; border-radius: 4px; cursor: pointer; flex: 1; font-weight: bold; }
+    .btn-open:hover { background: #43a047; }
+    .btn-closed:hover { background: #d32f2f; }
+    .led-icon {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+        background: #ccc; 
+        border: 2px solid rgba(0,0,0,0.1);
+        vertical-align: middle;
+    }
+    .led-green { background: #4caf50; box-shadow: 0 0 10px #4caf50; }
+    .led-red { background: #f44336; box-shadow: 0 0 10px #f44336; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1><span id="led-indicator" class="led-icon"></span>Counter 13</h1>
+
+  <div class="status-btns">
+    <button class="btn-open" onclick="setStatus('Open')">Open</button>
+    <button class="btn-closed" onclick="setStatus('Closed')">Closed</button>
+  </div>
+
+  <p class="status-msg" id="status-text">Ready for applicant</p>
+  
+  <div class="ticket-display" id="current-ticket">--</div>
+  
+  <button class="btn-call" id="call-btn" onclick="callNext()" style="display:none;">Call Assigned Ticket</button>
+  <button class="btn-repeat" id="repeat-btn" onclick="reAnnounce()">Re-announce Ticket</button>
+  <button class="btn-reserve" id="reserve-btn" onclick="reserveTicket()">No Show (Reserve)</button>
+  <button class="btn-clear" onclick="clearCurrent()">Clear & Finish</button>
+  <button class="btn-rescue" onclick="rescueTickets()">Rescue Ticket</button>
+  <button class="btn-undo" onclick="undoTicket()">Undo Tickets</button>
+
+  <div class="queue-section">
+    <strong>Assigned to me:</strong>
+    <div id="my-queue">No tickets assigned yet</div>
+  </div>
+</div>
+<script src="../js/password_modal.js"></script>
+<script>
+var myCounterId = 13;
+var currentActiveTicket = null;
+var myPin = null;
+
+function getPin(callback) {
+    if (!myPin) {
+        showPasswordPrompt("Enter PIN", function(pin) {
+            myPin = pin;
+            if (callback) callback(myPin);
+        });
+    } else {
+        if (callback) callback(myPin);
+    }
+}
+
+function updateLED(status) {
+    var led = document.getElementById('led-indicator');
+    if (!led) return;
+    led.className = 'led-icon';
+    if (status === 'Open') led.classList.add('led-green');
+    else if (status === 'Closed') led.classList.add('led-red');
+}
+
+function ajaxFetch(url, method, body, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(method || 'GET', url, true);
+    if (method === 'POST') {
+        xhr.setRequestHeader('Content-Type', 'application/json');
+    }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            if (callback) {
+                var data = JSON.parse(xhr.responseText);
+                callback(data);
+            }
+        }
+    };
+    xhr.send(body ? JSON.stringify(body) : null);
+}
+
+function fetchUpdates() {
+    ajaxFetch('/data', 'GET', null, function(data) {
+        if (!data) return;
+        updateQueue(data.queue || []);
+        if (data.status && data.status[myCounterId]) {
+            var s = data.status[myCounterId];
+            updateLED(s);
+            document.getElementById('status-text').innerText = (s === 'Open') ? 'Online' : 'Closed / Offline';
+        }
+        checkIfCalling(data.counters || []);
+    });
+}
+
+function updateQueue(queue) {
+    var list = document.getElementById('my-queue');
+    var myTickets = [];
+    for (var i = 0; i < queue.length; i++) {
+        if (queue[i].assignedCounter == myCounterId) {
+            myTickets.push(queue[i]);
+        }
+    }
+    
+    if (myTickets.length === 0) {
+        list.innerHTML = 'No tickets assigned yet';
+        document.getElementById('call-btn').style.display = 'none';
+        return;
+    }
+
+    myTickets.sort(function(a, b) {
+        if (a.isReserved && !b.isReserved) return 1;
+        if (!a.isReserved && b.isReserved) return -1;
+        var priorityOrder = { 'Priority': 1, 'Re-Online': 2 };
+        var aP = priorityOrder[a.type] || 3;
+        var bP = priorityOrder[b.type] || 3;
+        if (aP !== bP) return aP - bP;
+        return (a.timestamp || 0) - (b.timestamp || 0);
+    });
+
+    list.innerHTML = '';
+    for (var j = 0; j < myTickets.length; j++) {
+        (function() {
+            var t = myTickets[j];
+            var div = document.createElement('div');
+            div.className = 'waiting-ticket';
+            div.innerHTML = 'Ticket #' + t.number;
+            var typeColors = { 'Regular': '#1565c0', 'Priority': '#e91e63', 'Job Seeker': '#4caf50', 'Re-Online': '#ff9800' };
+            var typeColor = typeColors[t.type] || '#444';
+            if (t.type) {
+                div.innerHTML += ' <span style="font-size:0.75rem; background:' + typeColor + '; color:white; padding:2px 4px; border-radius:3px;">' + t.type + '</span>';
+            }
+            if (t.isReserved) {
+                div.innerHTML += '<span class="tag-reserved">RESERVED</span>';
+            }
+            div.onclick = function() { callSpecific(t.number, t.type); };
+            list.appendChild(div);
+        })();
+    }
+    
+    if (!currentActiveTicket && myTickets.length > 0) {
+        document.getElementById('call-btn').style.display = 'block';
+        document.getElementById('call-btn').setAttribute('data-next-ticket', myTickets[0].number);
+    } else {
+        document.getElementById('call-btn').style.display = 'none';
+    }
+}
+
+function checkIfCalling(activeCounters) {
+    var active = null;
+    for (var i = 0; i < activeCounters.length; i++) {
+        if (activeCounters[i].id == myCounterId) {
+            active = activeCounters[i];
+            break;
+        }
+    }
+    if (active) {
+        document.getElementById('current-ticket').textContent = '#' + active.ticket;
+        var msg = active.type && active.type !== 'Regular' ? active.type : 'Processing...';
+        document.getElementById('status-text').textContent = 'Current: ' + msg;
+        currentActiveTicket = active.ticket;
+        document.getElementById('repeat-btn').style.display = 'block';
+        document.getElementById('reserve-btn').style.display = 'block';
+        document.getElementById('call-btn').style.display = 'none';
+    } else {
+        document.getElementById('current-ticket').textContent = '--';
+        document.getElementById('status-text').textContent = 'Ready for applicant';
+        currentActiveTicket = null;
+        document.getElementById('repeat-btn').style.display = 'none';
+        document.getElementById('reserve-btn').style.display = 'none';
+    }
+}
+
+function callNext() {
+    var ticket = document.getElementById('call-btn').getAttribute('data-next-ticket');
+    if (ticket) {
+        ajaxFetch('/data', 'GET', null, function(data) {
+            var t = null;
+            for (var i = 0; i < data.queue.length; i++) {
+                if (data.queue[i].number == ticket) {
+                    t = data.queue[i];
+                    break;
+                }
+            }
+            if (t) callSpecific(t.number, t.type);
+        });
+    }
+}
+
+function callSpecific(ticketNum, type) {
+    if (!type) type = 'Regular';
+    ajaxFetch('/data', 'GET', null, function(data) {
+        var newQueue = [];
+        for (var i = 0; i < data.queue.length; i++) {
+            if (data.queue[i].number != ticketNum) {
+                newQueue.push(data.queue[i]);
+            }
+        }
+        data.queue = newQueue;
+        if (data.counts && data.counts[myCounterId] > 0) {
+            data.counts[myCounterId]--;
+        }
+        var message = 'Number ' + ticketNum + ', please proceed to Counter ' + myCounterId;
+        var timestamp = new Date().getTime();
+        var existingIndex = -1;
+        for (var j = 0; j < data.counters.length; j++) {
+            if (data.counters[j].id == myCounterId) {
+                existingIndex = j;
+                break;
+            }
+        }
+        if (existingIndex !== -1) {
+            data.counters[existingIndex].ticket = ticketNum;
+            data.counters[existingIndex].type = type;
+            data.counters[existingIndex].lastCallTime = timestamp;
+        } else {
+            data.counters.push({ id: myCounterId, type: type, ticket: ticketNum, lastCallTime: timestamp });
+        }
+        data.call = { text: message, timestamp: timestamp };
+        getPin(function(pin) { if (pin) performSync(data); });
+    });
+}
+
+function reAnnounce() {
+    if (!currentActiveTicket) return;
+    ajaxFetch('/data', 'GET', null, function(data) {
+        var message = 'Number ' + currentActiveTicket + ', please proceed to Counter ' + myCounterId;
+        var timestamp = new Date().getTime();
+        data.call = { text: message, timestamp: timestamp };
+        for (var i = 0; i < data.counters.length; i++) {
+            if (data.counters[i].id == myCounterId) {
+                data.counters[i].lastCallTime = timestamp;
+                break;
+            }
+        }
+        getPin(function(pin) { if (pin) performSync(data); });
+    });
+}
+
+function reserveTicket() {
+    if (!currentActiveTicket) return;
+    if (!confirm('No show? This ticket will be reserved back to your queue.')) return;
+    ajaxFetch('/data', 'GET', null, function(data) {
+        var active = null;
+        for (var i = 0; i < data.counters.length; i++) {
+            if (data.counters[i].id == myCounterId) {
+                active = data.counters[i];
+                break;
+            }
+        }
+        data.queue.push({
+            type: active ? active.type : 'Regular',
+            number: currentActiveTicket,
+            assignedCounter: myCounterId,
+            isReserved: true,
+            timestamp: new Date().getTime()
+        });
+        var newCounters = [];
+        for (var j = 0; j < data.counters.length; j++) {
+            if (data.counters[j].id != myCounterId) {
+                newCounters.push(data.counters[j]);
+            }
+        }
+        data.counters = newCounters;
+        if (!data.counts) data.counts = {};
+        data.counts[myCounterId] = (data.counts[myCounterId] || 0) + 1;
+        getPin(function(pin) { if (pin) performSync(data); });
+    });
+}
+
+function clearCurrent() {
+    if (!currentActiveTicket) {
+        alert('No active ticket to clear.');
+        return;
+    }
+    if (!confirm('Process finished? This ticket will be cleared so Info Desk can reuse the number.')) return;
+    ajaxFetch('/data', 'GET', null, function(data) {
+        var newCounters = [];
+        for (var i = 0; i < (data.counters || []).length; i++) {
+            if (data.counters[i].id != myCounterId) {
+                newCounters.push(data.counters[i]);
+            }
+        }
+        data.counters = newCounters;
+        var newQueue = [];
+        for (var j = 0; j < (data.queue || []).length; j++) {
+            if (data.queue[j].number != currentActiveTicket) {
+                newQueue.push(data.queue[j]);
+            }
+        }
+        data.queue = newQueue;
+        getPin(function(pin) { if (pin) performSync(data); });
+    });
+}
+
+function undoTicket() {
+    if (!confirm('Are you sure you want to undo the last action? This will restore the previous state of the entire queue.')) return;
+    ajaxFetch('/data', 'GET', null, function(data) {
+        if (data.history && data.history.length > 0) {
+            var previousState = data.history[0]; 
+            
+            
+            var currentHistory = data.history;
+            currentHistory.shift(); 
+            previousState.history = currentHistory;
+            
+            getPin(function(pin) { 
+                if (pin) performSync(previousState, function() {
+                    alert('Last action undone successfully.');
+                }); 
+            });
+        } else {
+            alert('No actions to undo.');
+        }
+    });
+}
+
+function rescueTickets() {
+    showPasswordPrompt("Enter the Counter ID to rescue tickets FROM (e.g. 2):", function(fromCounter) {
+        if (!fromCounter || fromCounter == myCounterId) return;
+        ajaxFetch('/data', 'GET', null, function(data) {
+            if (!data.queue) data.queue = [];
+            var rescuedCount = 0;
+            for (var i = 0; i < data.queue.length; i++) {
+                if (data.queue[i].assignedCounter == fromCounter) {
+                    data.queue[i].assignedCounter = myCounterId;
+                    rescuedCount++;
+                }
+            }
+            if (rescuedCount > 0) {
+                if (!data.counts) data.counts = {};
+                data.counts[myCounterId] = (data.counts[myCounterId] || 0) + rescuedCount;
+                data.counts[fromCounter] = Math.max(0, (data.counts[fromCounter] || 0) - rescuedCount);
+                getPin(function(pin) { if (pin) performSync(data, function() {
+                    alert('Successfully moved ' + rescuedCount + ' tickets from Counter ' + fromCounter + ' to your queue.');
+                }); });
+            } else {
+                alert('No tickets found for Counter ' + fromCounter + '.');
+            }
+        });
+    });
+}
+
+function setStatus(status) {
+    ajaxFetch('/data', 'GET', null, function(data) {
+        if (!data.status) data.status = {};
+        data.status[myCounterId] = status;
+        updateLED(status);
+        getPin(function(pin) { if (pin) performSync(data); });
+    });
+}
+
+function performSync(data, callback) {
+    data.auth_pin = myPin;
+    data.auth_counter = myCounterId;
+    ajaxFetch('/data', 'POST', data, function(res) {
+        if (typeof res === 'string') {
+            try { res = JSON.parse(res); } catch(e){}
+        }
+        if (res && res.error) {
+            alert(res.error);
+            myPin = null;
+        } else {
+            if (callback) callback();
+            fetchUpdates();
+        }
+    });
+}
+
+setInterval(fetchUpdates, 1000);
+fetchUpdates();
+</script>
+</body>
+</html>

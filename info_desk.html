@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>NBI Queue System - Information Desk</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial; background: #eef2f6; padding: 2rem; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-bottom: 4px solid #0d47a1; }
+    h1 { color: #0d47a1; text-align: center; }
+    .ticket-box { background: #e8f5e9; padding: 2rem; text-align: center; margin: 2rem 0; border: 1px solid #c8e6c9; }
+    .ticket-number { font-size: 4rem; font-weight: bold; color: #2e7d32; }
+    .assign-box { margin: 10px 0; display: flex; gap: 10px; align-items: center; justify-content: center; }
+    input { padding: 0.5rem; width: 60px; font-size: 1.1rem; text-align: center; }
+    button { width: 100%; padding: 1rem; background: #1565c0; color: white; border: none; font-size: 1.2rem; cursor: pointer; margin-bottom: 5px; }
+    button:hover { opacity: 0.9; }
+    .btn-regular { background: #1565c0; }
+    .btn-priority { background: #e91e63; }
+    .btn-jobseeker { background: #4caf50; }
+    .btn-reonline { background: #ff9800; }
+    .workload-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 1rem; }
+    .counter-stat { background: #f0f0f0; border: 1px solid #ccc; padding: 10px; text-align: center; border-radius: 4px; cursor: pointer; transition: transform 0.1s; }
+    .counter-stat:hover { transform: scale(1.05); filter: brightness(0.95); }
+    .counter-stat.selected { border: 3px solid #1565c0; box-shadow: 0 0 10px rgba(21, 101, 192, 0.5); }
+    .counter-stat.busy { background: #fff3e0; border-color: #ff9800; font-weight: bold; }
+    .counter-stat.open { background: #e8f5e9; border-color: #4caf50; }
+    .counter-stat.closed { background: #ffebee; border-color: #f44336; opacity: 0.7; cursor: not-allowed; }
+    .counter-stat.closed:hover { transform: none; filter: none; }
+    .count-number { font-size: 1.2rem; display: block; margin-top: 5px; color: #1565c0; }
+  </style>
+</head>
+<body>
+<div class="container" style="max-width: 900px;">
+  <h1>Information Desk</h1>
+  <div style="display: flex; gap: 2rem;">
+    <div style="flex: 1;">
+      <div class="ticket-box">
+        <p>Next Ticket to Issue:</p>
+        <div class="ticket-number" id="next-ticket">--</div>
+        <div class="assign-box">
+          <label for="assign-counter">Assign to Counter:</label>
+          <input type="number" id="assign-counter" placeholder="1-18" min="1" max="18">
+        </div>
+      </div>
+      <button class="btn-regular" onclick="issueTicket('Regular')">Issue Regular Ticket</button>
+      <button class="btn-priority" onclick="issueTicket('Priority')">Issue Priority (Senior/PWD)</button>
+      <button class="btn-jobseeker" onclick="issueTicket('Job Seeker')">Issue Job Seeker (Fresh Grad)</button>
+      <button class="btn-reonline" onclick="issueTicket('Re-Online')">Issue Re-Online (Correction)</button>
+      <button onclick="resetQueue()" style="background:#555; margin-top:20px;">Reset To Ticket #1</button>
+      <div class="history" id="queue-count" style="margin-top: 1rem;">Tickets in Queue: 0</div>
+    </div>
+    <div style="flex: 1; border-left: 1px solid #ddd; padding-left: 2rem;">
+      <h3>Counter Workload</h3>
+      <div class="workload-grid" id="workload-grid">
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/password_modal.js"></script>
+<script>
+function ajaxFetch(url, method, data, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(method || 'GET', url, true);
+    if (method === 'POST') {
+        xhr.setRequestHeader('Content-Type', 'application/json');
+    }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            if (callback) {
+                var responseData = JSON.parse(xhr.responseText);
+                callback(responseData);
+            }
+        }
+    };
+    xhr.send(data ? JSON.stringify(data) : null);
+}
+
+
+
+function selectCounter(id) {
+    var input = document.getElementById('assign-counter');
+    input.value = id;
+    
+    
+    var allStats = document.querySelectorAll('.counter-stat');
+    for (var i = 0; i < allStats.length; i++) {
+        allStats[i].className = allStats[i].className.replace(' selected', '');
+    }
+    
+    var stats = document.getElementsByClassName('counter-stat');
+    var selectedDiv = null;
+    for (var j = 0; j < stats.length; j++) {
+        if (stats[j].getAttribute('data-id') == id) {
+            selectedDiv = stats[j];
+            break;
+        }
+    }
+
+    if (selectedDiv) {
+        if (selectedDiv.className.indexOf('closed') !== -1) {
+            alert('Counter ' + id + ' is Closed. You can only assign tickets to Open counters.');
+            input.value = '';
+            return;
+        }
+        selectedDiv.className += ' selected';
+    }
+}
+
+function issueTicket(type) {
+    if (!type) type = 'Regular';
+    
+    getData(function(data) {
+        var ticket = data.nextTicket || 1;
+        var counter = document.getElementById('assign-counter').value;
+        
+        if (!counter) {
+            alert("Please enter a counter number first!");
+            return;
+        }
+
+        var status = data.status || {};
+        if (status[counter] !== 'Open') {
+            alert("Counter " + counter + " is currently Closed. Please assign to an Open counter.");
+            return;
+        }
+
+        if (!data.queue) data.queue = [];
+        data.queue.push({ 
+            number: ticket, 
+            type: type,
+            assignedCounter: parseInt(counter),
+            timestamp: new Date().getTime() 
+        });
+        
+        if(!data.counts) data.counts = {};
+        data.counts[counter] = (data.counts[counter] || 0) + 1;
+        
+        data.nextTicket = ticket + 1;
+        
+        syncToServer(data, function() {
+            updateUI(data);
+            document.getElementById('assign-counter').value = ''; 
+            alert(type + ' Ticket #' + ticket + ' assigned to Counter ' + counter);
+        });
+    });
+}
+
+function resetQueue() {
+    showPasswordPrompt("Enter PIN", function(pin) {
+        if (!pin) return;
+
+        ajaxFetch('/data', 'GET', null, function(data) {
+            
+            var hasQueue = data && data.queue && data.queue.length > 0;
+            
+            
+            var hasActiveCalls = false;
+            if (data && data.counters) {
+                for (var i = 0; i < data.counters.length; i++) {
+                    if (data.counters[i].ticket) {
+                        hasActiveCalls = true;
+                        break;
+                    }
+                }
+            }
+
+            if (hasQueue || hasActiveCalls) {
+                alert("System cannot be reset. There are still tickets waiting in the queue or being processed at counters.");
+                return;
+            }
+
+            
+            var update = {
+                auth_pin: pin,
+                auth_counter: "00",
+                nextTicket: 1,
+                queue: [],
+                counters: [],
+                counts: {},
+                announcement: "",
+                call: null,
+                status: data.status || {} 
+            };
+            
+            ajaxFetch('/data', 'POST', update, function(res) {
+                if (typeof res === 'string') try { res = JSON.parse(res); } catch(e){}
+                if (res && res.error) {
+                    alert(res.error);
+                } else {
+                    alert("System Reset Success. All counters Closed and Ticket back to #1.");
+                    location.reload();
+                }
+            });
+        });
+    });
+}
+
+function getData(callback) {
+    ajaxFetch('/data', 'GET', null, function(data) {
+        if (callback) callback(data);
+    });
+}
+
+var myPin = null;
+
+function syncToServer(data, callback) {
+    var proceed = function(pin) {
+        myPin = pin;
+        data.auth_pin = myPin;
+        data.auth_counter = "00";
+
+        ajaxFetch('/data', 'POST', data, function(res) {
+            if (typeof res === 'string') {
+                try { res = JSON.parse(res); } catch(e){}
+            }
+            if (res && res.error) {
+                alert(res.error);
+                myPin = null;
+                if (callback) callback(res);
+            } else {
+                if (callback) callback(res);
+            }
+        });
+    };
+
+    if (!myPin) {
+        showPasswordPrompt("Enter PIN", proceed);
+    } else {
+        proceed(myPin);
+    }
+}
+
+function updateUI(data) {
+    if (!data) return;
+    document.getElementById('next-ticket').innerHTML = data.nextTicket || 1;
+    document.getElementById('queue-count').innerHTML = "Tickets in Queue: " + (data.queue ? data.queue.length : 0);
+    
+    var grid = document.getElementById('workload-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    var counts = data.counts || {};
+    var activeCounters = data.counters || [];
+    var status = data.status || {};
+    var currentSelected = document.getElementById('assign-counter').value;
+    
+    for (var i = 1; i <= 18; i++) {
+        var isBusy = false;
+        for (var k = 0; k < activeCounters.length; k++) {
+            if (activeCounters[k].id == i) {
+                isBusy = true;
+                break;
+            }
+        }
+        var cStatus = status[i] || 'Closed';
+
+        var displayCount = counts[i] || 0;
+        
+        var div = document.createElement('div');
+        div.className = 'counter-stat';
+        div.setAttribute('data-id', i);
+        if (isBusy) div.className += ' busy';
+        if (cStatus === 'Open') div.className += ' open';
+        if (cStatus === 'Closed') div.className += ' closed';
+        if (currentSelected == i) div.className += ' selected';
+        
+        (function(id) {
+            div.onclick = function() { selectCounter(id); };
+        })(i);
+
+        var html = 'Counter ' + i + '<span class="count-number">' + displayCount + '</span>';
+        html += '<small style="font-weight:bold; color:' + (cStatus === 'Open' ? 'green' : 'red') + '">' + cStatus + '</small>';
+        if (isBusy) html += '<br><small style="color:blue">PROCESS</small>';
+        div.innerHTML = html;
+        grid.appendChild(div);
+    }
+}
+
+setInterval(function() {
+    getData(function(data) {
+        updateUI(data);
+    });
+}, 1000);
+
+getData(updateUI);
+</script>
+</body>
+</html>
+
